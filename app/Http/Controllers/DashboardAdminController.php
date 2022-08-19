@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardAdminController extends Controller
 {
@@ -15,6 +20,11 @@ class DashboardAdminController extends Controller
     public function index()
     {
         //
+        return view('dashboard.index', [
+            'title' => 'Pers pergerakan | Dashboard',
+            'users' => User::latest()->get(),
+            'posts' => Post::latest()->get(),
+        ]);
     }
 
     /**
@@ -25,6 +35,10 @@ class DashboardAdminController extends Controller
     public function create()
     {
         //
+        return view('dashboard.create', [
+            'title' => 'Pers pergerakan | Create post',
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -36,6 +50,27 @@ class DashboardAdminController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'slug' => 'required|unique:posts',
+            'body' => 'required',
+            'image' => 'image|file|max:2045',
+            'category_id' => 'required'
+        ]);
+
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('post-image');
+        }
+
+        $validatedData['excerpt'] = Str::limit(strip_tags($request->body), 50, '...');
+        $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['world'] =  $request->world;
+
+        Post::create($validatedData);
+
+        return redirect('/dashboardadmin/post')->with('message', '<div class="alert alert-success" role="alert">
+        Post has been created!
+      </div>');
     }
 
     /**
@@ -47,6 +82,10 @@ class DashboardAdminController extends Controller
     public function show(Post $post)
     {
         //
+        return view('dashboard.detail', [
+            'title' => 'Pers pergerakan | Detail post',
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -58,6 +97,11 @@ class DashboardAdminController extends Controller
     public function edit(Post $post)
     {
         //
+        return view('dashboard.edit', [
+            'title' => 'Pers pergerakan | Edit post',
+            'post' => $post,
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -70,6 +114,34 @@ class DashboardAdminController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+        $rules = [
+            'title' => 'required|max:255',
+            'body' => 'required',
+            'category_id' => 'required',
+            'image' => 'image|file|max:2045',
+        ];
+
+        if ($post->slug != $request->slug) {
+            $rules['slug'] = 'required|unique:posts';
+        }
+
+        $validatedData = $request->validate($rules);
+        if ($request->file('image')) {
+            if ($post->image) {
+                Storage::delete($post->image);
+            }
+            $validatedData['image'] = $request->file('image')->store('post-image');
+        }
+        $validatedData['excerpt'] = Str::limit(strip_tags($request->body), 50, '...');
+        $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['world'] =  $request->world;
+
+        Post::where('id', $post->id)
+            ->update($validatedData);
+
+        return redirect('/dashboardadmin/post')->with('message', '<div class="alert alert-success" role="alert">
+        Post has been updated!
+      </div>');
     }
 
     /**
@@ -81,5 +153,17 @@ class DashboardAdminController extends Controller
     public function destroy(Post $post)
     {
         //
+        if ($post->image) {
+            Storage::delete($post->image);
+        }
+        Post::destroy($post->id);
+        return redirect('/dashboardadmin/post')->with('message', '<div class="alert alert-success" role="alert">
+        Post has been deleted!
+      </div>');
+    }
+    public function checkSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
+        return response()->json(['slug' => $slug]);
     }
 }

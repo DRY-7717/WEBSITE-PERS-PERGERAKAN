@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AutomotiveController;
+use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardAdsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardEditorChoiceController;
@@ -84,6 +85,11 @@ Route::post('/auth/resetpassword',[AuthController::class,'resetpassword'])->name
 // End forgot password
 Route::post('/auth/logout', [AuthController::class, 'logout']);
 
+// Admin
+Route::get('/dashboardadmin/post/checkSlug', [DashboardAdminController::class, 'checkSlug'])->middleware('admin');
+Route::resource('dashboardadmin/post',DashboardAdminController::class)->middleware('admin'); 
+
+// Post
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('admin');
 Route::get('/dashboard/post/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
 Route::resource('/dashboard/post', DashboardPostController::class)->middleware('auth');

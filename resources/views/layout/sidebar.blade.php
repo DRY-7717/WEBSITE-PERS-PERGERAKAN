@@ -9,7 +9,7 @@
         <ul class="sidebar-menu">
             @can('admin')
             <li class="menu-header">Dashboard</li>
-            <li class="{{ Request::is('dashboard') ? 'active' : '' }}"><a class="nav-link" href="/dashboard"><i
+            <li class="{{ Request::is('dashboardadmin/post*') ? 'active' : '' }}"><a class="nav-link" href="/dashboardadmin/post"><i
                         class="fas fa-columns"></i> <span>Dashboard</span></a>
             </li>
             @endcan
