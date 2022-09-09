@@ -40,7 +40,7 @@
                 <button type="submit" class="btn btn-primary w-100">Sign in</button>
                 <hr>
                 <a href="/auth/register" class="text-center d-block mb-1 text-decoration-none" ><small>Have an account?</small></a>
-                <a href="/auth/forgotpassword" class="text-center d-block text-decoration-none"><small>Forgot password</small></a>
+                
             </form>
         </div>
     </div>

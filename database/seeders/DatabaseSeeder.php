@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -59,5 +60,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'Health',
             'slug' => 'health'
         ]);
+        User::create([
+            'name' => "Pers Pergerakan",
+            'email' => "pmiicabangciputatofficial@gmail.com",
+            'username' => "perspergerakan",
+            'role' => 1,
+            'komisariat' => "PC. PMII Ciputat",
+            'alamat' => "Jl. Ibnu Sina I, Pisangan, Kec. Ciputat Tim., Kota Tangerang Selatan, Banten 15419",
+            'ttl' => '20 Februari 1960',
+            'password' => Hash::make('password')
+        ]);
     }
+
 }

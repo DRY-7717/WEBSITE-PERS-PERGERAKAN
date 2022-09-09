@@ -103,7 +103,7 @@
                 <button type="submit" class="btn btn-primary w-100">Sign Up</button>
                 <hr>
                 <a href="/auth/signin" class="text-center d-block mb-1 text-decoration-none" ><small>Sign in</small></a>
-                <a href="#" class="text-center d-block text-decoration-none"><small>Forgot password</small></a>
+                
             </form>
         </div>
     </div>

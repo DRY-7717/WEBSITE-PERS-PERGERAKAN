@@ -77,11 +77,11 @@ Route::get('/auth/signin', [AuthController::class, 'signin']);
 Route::post('/auth/signin', [AuthController::class, 'authenticate']);
 Route::get('/auth/register', [AuthController::class, 'registrasi']);
 Route::post('/auth/register', [AuthController::class, 'registered']);
-// Forgot password
-Route::get('/auth/forgotpassword',[AuthController::class,'showforgotpassword'])->name('auth.showforgotpassword');
-Route::post('/auth/forgotpassword',[AuthController::class,'sendlinkforgotpassword'])->name('auth.sendlinkforgotpassword');
-Route::get('/auth/resetpassword/{token}',[AuthController::class,'showresetpassword'])->name('auth.showresetpassword');
-Route::post('/auth/resetpassword',[AuthController::class,'resetpassword'])->name('auth.resetpassword');
+// // Forgot password
+// Route::get('/auth/forgotpassword',[AuthController::class,'showforgotpassword'])->name('auth.showforgotpassword');
+// Route::post('/auth/forgotpassword',[AuthController::class,'sendlinkforgotpassword'])->name('auth.sendlinkforgotpassword');
+// Route::get('/auth/resetpassword/{token}',[AuthController::class,'showresetpassword'])->name('auth.showresetpassword');
+// Route::post('/auth/resetpassword',[AuthController::class,'resetpassword'])->name('auth.resetpassword');
 // End forgot password
 Route::post('/auth/logout', [AuthController::class, 'logout']);
 
